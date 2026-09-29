@@ -34,7 +34,7 @@ canvas{max-width:100%;height:auto;border-radius:8.4px;display:block}
     <p>Every look, run on openly licensed photos from Wikimedia Commons. Nothing here is uploaded: photos load straight from Commons into this page and are developed on your GPU.</p>
   </header>
   <section class="card"><b id="status">Starting</b><div class="prog"><i id="bar"></i></div></section>
-  <section class="card"><h2>Flags</h2><p>Looks whose behaviour on real photos needs attention. Thresholds: added clipping over 3% of pixels, skin hue moved more than 12&deg;, average brightness moved more than 0.15, neutrals tinted more than intended.</p><div class="scroll" id="flags"></div></section>
+  <section class="card"><h2>Flags</h2><p>Looks whose behaviour on real photos needs attention. Thresholds: over 3% of a photo's detailed pixels pushed to pure white or black, skin hue moved more than 12&deg;, average brightness moved more than 0.15, neutrals tinted more than intended.</p><div class="scroll" id="flags"></div></section>
   <section class="card"><h2>Contact Sheets</h2><p>Each row is one photo: the original, then the focus looks.</p><div id="sheets" style="display:flex;flex-direction:column;gap:16px"></div></section>
   <section class="card"><h2>All Looks</h2><div class="scroll" id="table"></div></section>
   <section class="card"><h2>Photo Credits</h2><div class="credits" id="credits"></div></section>
@@ -80,6 +80,17 @@ canvas{max-width:100%;height:auto;border-radius:8.4px;display:block}
   }
   const strip = (h) => { const d = document.createElement('div'); d.innerHTML = h || ''; return (d.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 80); };
 
+  // detail lost: pixels that had detail in the original and end up at pure white or black
+  function lost(o, im) {
+    const a = o.data, d = im.data, n = d.length / 4; let hi = 0, lo = 0;
+    for (let i = 0; i < d.length; i += 4) {
+      const oL = 0.2126 * a[i] + 0.7152 * a[i + 1] + 0.0722 * a[i + 2], oM = Math.max(a[i], a[i + 1], a[i + 2]);
+      const L = 0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2], M = Math.max(d[i], d[i + 1], d[i + 2]);
+      if (oM < 245 && M >= 254 && L > 200) hi++;
+      if (oL >= 10 && L <= 3) lo++;
+    }
+    return { hi: hi / n, lo: lo / n };
+  }
   // pixel metrics
   function metrics(img) {
     const d = img.data, n = d.length / 4; let L = 0, hi = 0, lo = 0, nN = 0, nC = 0;
@@ -137,8 +148,8 @@ canvas{max-width:100%;height:auto;border-radius:8.4px;display:block}
     const row = { title: p.title, group: p.group, skinPx: mk.skin.length };
     for (const l of looks) {
       const e = D.newEdit(); e.seed = 0.37; e.look = l.id; for (const k in l.fx) e.p[k] = l.fx[k];
-      const im = R.renderPixels(e, w, h, {}), m = metrics(im), a = agg[l.id];
-      a.n++; a.dL.push(m.L - om.L); a.hi = Math.max(a.hi, m.hi - om.hi); a.lo = Math.max(a.lo, m.lo - om.lo);
+      const im = R.renderPixels(e, w, h, {}), m = metrics(im), a = agg[l.id], x = lost(o, im);
+      a.n++; a.dL.push(m.L - om.L); a.hi = Math.max(a.hi, x.hi); a.lo = Math.max(a.lo, x.lo);
       if (oSkin && !(l.p && l.p.mono)) { const s = regionStats(im, mk.skin); if (s) { a.skin.push(dh(oSkin.hue, s.hue)); a.sat.push(s.sat / Math.max(0.01, oSkin.sat)); } }
       if (oNeut) { const s = regionStats(im, mk.neut); if (s) a.neut.push(s.chroma - oNeut.chroma); }
     }
@@ -175,7 +186,7 @@ canvas{max-width:100%;height:auto;border-radius:8.4px;display:block}
   results.looks = rows;
   const f2 = (x, d) => (x == null ? '—' : (x > 0 ? '+' : '') + x.toFixed(d));
   const tr = (r) => '<tr><td>' + r.name + '</td><td>' + r.cat + '</td><td>' + f2(r.dL, 3) + '</td><td class="' + (r.hi > 0.03 ? 'e' : '') + '">' + (r.hi * 100).toFixed(1) + '%</td><td class="' + (r.lo > 0.03 ? 'e' : '') + '">' + (r.lo * 100).toFixed(1) + '%</td><td class="' + (r.skin != null && Math.abs(r.skin) > 12 ? 'w' : '') + '">' + f2(r.skin, 1) + '</td><td>' + (r.sat == null ? '—' : '×' + r.sat.toFixed(2)) + '</td><td>' + f2(r.neut, 1) + '</td><td class="w">' + r.flags.join('; ') + '</td></tr>';
-  const thead = '<tr><th>Look</th><th>Group</th><th>Avg Δ brightness</th><th>Max added clip</th><th>Max added crush</th><th>Skin Δ hue</th><th>Skin sat</th><th>Neutral Δ chroma</th><th>Flags</th></tr>';
+  const thead = '<tr><th>Look</th><th>Group</th><th>Avg Δ brightness</th><th>Highlight detail lost</th><th>Shadow detail lost</th><th>Skin Δ hue</th><th>Skin sat</th><th>Neutral Δ chroma</th><th>Flags</th></tr>';
   const flagged = rows.filter((r) => r.flags.length);
   $('flags').innerHTML = flagged.length ? '<table>' + thead + flagged.map(tr).join('') + '</table>' : '<p>No look crossed a threshold.</p>';
   $('table').innerHTML = '<table>' + thead + rows.map(tr).join('') + '</table>';

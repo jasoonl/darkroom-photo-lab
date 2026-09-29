@@ -41,7 +41,7 @@
 
   /* ---------- Sony ---------- */
   const S = {};
-  S.fl = { temp: -3, tint: -2, contrast: -6, saturation: -30, clarity: 10, curve: { rgb: [[0, 24], [64, 70], [128, 128], [192, 190], [255, 238]] }, grade: { sh: [165, 26, 0], hi: [52, 12, 0], blend: 55 }, hsl: { green: [10, -16, 0], blue: [-10, -20, -6], orange: [-4, -6, 3], red: [2, -6, 0], yellow: [-4, -10, 0] } };
+  S.fl = { temp: -3, tint: -2, contrast: -6, saturation: -30, clarity: 10, curve: { rgb: [[0, 24], [64, 70], [128, 128], [192, 190], [255, 238]] }, grade: { sh: [165, 26, 0], hi: [52, 12, 0], blend: 55 }, hsl: { green: [10, -16, 0], blue: [-10, -20, -6], orange: [-7, -6, 3], red: [2, -6, 0], yellow: [-4, -10, 0] } };
   S.in = { temp: 6, contrast: -28, saturation: -20, highlights: -16, curve: { rgb: [[0, 30], [128, 132], [255, 228]] }, grade: { hi: [46, 14, 0], sh: [215, 8, 0] } };
   S.vv2 = { exposure: 0.15, contrast: 10, saturation: 18, whites: 10, blacks: -4, hsl: { blue: [-3, 8, 0], aqua: [0, 10, 0] } };
   S.bw = { mono: 1, contrast: 10 };

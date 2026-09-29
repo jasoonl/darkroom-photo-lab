@@ -347,7 +347,7 @@ vec3 stage(vec3 c, Stage P, sampler2D lut){
   c = clamp(protectRange(cin, c), 0.0, 1.0);
   c = vec3(lut1(lut, c.r, 3), lut1(lut, c.g, 3), lut1(lut, c.b, 3));
   c = vec3(lut1(lut, c.r, 0), lut1(lut, c.g, 1), lut1(lut, c.b, 2));
-  return c;
+  return clamp(protectRange(cin, c), 0.0, 1.0);
 }
 // pre-stage tone on a gamma-encoded colour; detail terms passed in
 vec3 tone(vec3 c, float dClar, float dTex, float dSharp, vec3 haze){
