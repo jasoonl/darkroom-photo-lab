@@ -271,6 +271,20 @@ float vnoise(vec2 p){
   vec2 i = floor(p), f = fract(p); vec2 u = f * f * (3.0 - 2.0 * f);
   return mix(mix(hash12(i), hash12(i + vec2(1,0)), u.x), mix(hash12(i + vec2(0,1)), hash12(i + vec2(1,1)), u.x), u.y);
 }
+// Roll off a luminance push so it approaches, but never hits, white or black (film-like shoulder and toe).
+float softPush(float p, float room){ room = max(room, 1e-4); float r = abs(p) / room; return p / pow(1.0 + r * r * r, 1.0 / 3.0); }
+vec3 protectRange(vec3 cin, vec3 c){
+  float Li = clamp(luma(cin), 0.0, 1.0), Lo = luma(c);
+  float p = Lo - Li;
+  float Lt = Li + (p > 0.0 ? softPush(p, 1.0 - Li) : softPush(p, Li));
+  if (Lo > 1e-4) c *= Lt / Lo; else c = vec3(Lt);
+  // gamut: pull chroma in toward luminance instead of clipping one channel
+  float L = clamp(luma(c), 0.0, 1.0), mx = max(c.r, max(c.g, c.b)), mn = min(c.r, min(c.g, c.b));
+  float k = 1.0;
+  if (mx > 0.985) k = min(k, (0.985 - L) / max(mx - L, 1e-4));
+  if (mn < 0.004) k = min(k, (L - 0.004) / max(L - mn, 1e-4));
+  return L + (c - L) * clamp(k, 0.0, 1.0);
+}
 vec3 screen(vec3 a, vec3 b){ return 1.0 - (1.0 - a) * (1.0 - clamp(b, 0.0, 1.0)); }
 float lut1(sampler2D t, float x, int ch){
   vec4 v = texture(t, vec2(clamp(x, 0.0, 1.0) * (1023.0/1024.0) + 0.5/1024.0, 0.5));
@@ -286,6 +300,7 @@ void hueW(float h, out float w[8]){
 }
 vec3 stage(vec3 c, Stage P, sampler2D lut){
   if (P.on < 0.5) return c;
+  vec3 cin = c;
   if (P.con != 0.0){
     float k = exp(P.con * 0.85);
     vec3 x = clamp(c, 0.0, 1.0);
@@ -329,7 +344,7 @@ vec3 stage(vec3 c, Stage P, sampler2D lut){
     c += P.gSh * shM + P.gMi * miM + P.gHi * hiM + P.gGl;
     c += (P.gLum.x * shM + P.gLum.y * miM + P.gLum.z * hiM + P.gLum.w) * 0.22;
   }
-  c = clamp(c, 0.0, 1.0);
+  c = clamp(protectRange(cin, c), 0.0, 1.0);
   c = vec3(lut1(lut, c.r, 3), lut1(lut, c.g, 3), lut1(lut, c.b, 3));
   c = vec3(lut1(lut, c.r, 0), lut1(lut, c.g, 1), lut1(lut, c.b, 2));
   return c;
@@ -362,7 +377,7 @@ vec3 tone(vec3 c, float dClar, float dTex, float dSharp, vec3 haze){
 }
 vec3 develop(vec3 srgb, float dClar, float dTex, float dSharp, vec3 haze){
   vec3 c = l2s(s2l(srgb) * uGain);
-  c = tone(c, dClar, dTex, dSharp, haze);
+  c = protectRange(srgb, tone(c, dClar, dTex, dSharp, haze));
   c = stage(c, uL, uLutL);
   c = stage(c, uU, uLutU);
   return c;

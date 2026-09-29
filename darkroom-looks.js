@@ -41,7 +41,7 @@
 
   /* ---------- Sony ---------- */
   const S = {};
-  S.fl = { temp: -4, tint: -6, contrast: -6, saturation: -30, clarity: 10, curve: { rgb: [[0, 24], [64, 70], [128, 128], [192, 190], [255, 238]] }, grade: { sh: [165, 26, 0], hi: [52, 12, 0], blend: 55 }, hsl: { green: [10, -16, 0], blue: [-10, -20, -6], orange: [0, -10, 2], red: [0, -8, 0], yellow: [-4, -10, 0] } };
+  S.fl = { temp: -3, tint: -2, contrast: -6, saturation: -30, clarity: 10, curve: { rgb: [[0, 24], [64, 70], [128, 128], [192, 190], [255, 238]] }, grade: { sh: [165, 26, 0], hi: [52, 12, 0], blend: 55 }, hsl: { green: [10, -16, 0], blue: [-10, -20, -6], orange: [-4, -6, 3], red: [2, -6, 0], yellow: [-4, -10, 0] } };
   S.in = { temp: 6, contrast: -28, saturation: -20, highlights: -16, curve: { rgb: [[0, 30], [128, 132], [255, 228]] }, grade: { hi: [46, 14, 0], sh: [215, 8, 0] } };
   S.vv2 = { exposure: 0.15, contrast: 10, saturation: 18, whites: 10, blacks: -4, hsl: { blue: [-3, 8, 0], aqua: [0, 10, 0] } };
   S.bw = { mono: 1, contrast: 10 };
@@ -127,7 +127,7 @@
   add('film', 'kodak-gold-200', 'Gold 200', 'Colour negative · ISO 200', { temp: 12, contrast: 6, saturation: 6, curve: { rgb: [[0, 6], [128, 132], [255, 250]] }, hsl: { yellow: [-6, 16, 4], orange: [0, 8, 2], green: [-10, -8, 0], blue: [-6, -12, 0] }, grade: { hi: [45, 16, 0] } }, { grain: 16, grainSize: 22, grainColor: 15 });
   add('film', 'kodak-ultramax-400', 'UltraMax 400', 'Colour negative · ISO 400', { temp: 8, contrast: 10, saturation: 10, hsl: { red: [0, 10, 0], yellow: [-4, 10, 0] }, grade: { sh: [200, 8, 0], hi: [45, 8, 0] } }, { grain: 20, grainSize: 24, grainColor: 20 });
   add('film', 'kodak-colorplus-200', 'ColorPlus 200', 'Colour negative · ISO 200', { temp: 14, tint: 4, contrast: -4, saturation: -10, curve: { rgb: [[0, 16], [128, 130], [255, 244]] }, grade: { hi: [48, 14, 0] } }, { grain: 22, grainSize: 26 });
-  add('film', 'kodachrome-64', 'Kodachrome 64', 'Slide · ISO 64', { temp: 5, contrast: 22, saturation: 14, curve: { rgb: [[0, 0], [50, 36], [128, 128], [210, 220], [255, 250]] }, hsl: { red: [-2, 20, -8], orange: [0, 6, 0], yellow: [-8, 6, 0], green: [-10, -6, -6], blue: [4, 14, -16], aqua: [4, 6, -6] } }, { grain: 10, grainSize: 16 });
+  add('film', 'kodachrome-64', 'Kodachrome 64', 'Slide · ISO 64', { temp: 5, contrast: 22, saturation: 14, curve: { rgb: [[0, 0], [50, 36], [128, 128], [210, 220], [255, 250]] }, hsl: { red: [-2, 12, -6], orange: [0, 2, 0], yellow: [-8, 6, 0], green: [-10, -6, -6], blue: [4, 14, -16], aqua: [4, 6, -6] } }, { grain: 10, grainSize: 16 });
   add('film', 'ektachrome-e100', 'Ektachrome E100', 'Slide · ISO 100', { temp: -6, contrast: 16, saturation: 12, hsl: { blue: [0, 18, -4], aqua: [0, 12, 0], red: [0, 5, 0] } }, { grain: 5, grainSize: 12 });
   add('film', 'fuji-velvia-50', 'Velvia 50', 'Slide · ISO 50', { contrast: 30, saturation: 34, blacks: -14, curve: { rgb: [[0, 0], [64, 48], [192, 208], [255, 255]] }, hsl: { blue: [4, 20, -16], green: [6, 16, -10], red: [-4, 14, -6], magenta: [-6, 16, 0] } }, { vignette: -12 });
   add('film', 'fuji-superia-400', 'Superia 400', 'Colour negative · ISO 400', { temp: -3, contrast: 10, saturation: 8, hsl: { green: [8, 12, 0] }, grade: { sh: [150, 10, 0], hi: [330, 5, 0] } }, { grain: 20, grainSize: 22, grainColor: 25 });
@@ -140,7 +140,7 @@
   add('film', 'ilford-hp5', 'HP5 Plus', 'B&W · ISO 400', { mono: 1, contrast: 12 }, { grain: 30, grainSize: 26, grainRough: 50 });
   add('film', 'ilford-delta-3200', 'Delta 3200', 'B&W · ISO 3200', { mono: 1, contrast: 4, blacks: 10, curve: { rgb: [[0, 18], [255, 244]] } }, { grain: 62, grainSize: 42, grainRough: 60 });
 
-  const pola = { contrast: -18, saturation: -10, texture: -18, curve: { rgb: [[0, 28], [64, 74], [128, 130], [200, 196], [255, 232]], r: [[0, 0], [80, 74], [255, 255]], g: [[0, 8], [128, 130], [255, 252]], b: [[0, 6], [128, 122], [255, 226]] }, grade: { sh: [175, 10, 0], hi: [50, 12, 0] } };
+  const pola = { contrast: -18, saturation: -10, texture: -18, curve: { rgb: [[0, 28], [64, 74], [128, 130], [200, 196], [255, 232]], r: [[0, 2], [80, 79], [255, 255]], g: [[0, 6], [128, 129], [255, 252]], b: [[0, 8], [128, 125], [255, 236]] }, grade: { sh: [180, 10, 0], hi: [40, 9, 0] }, hsl: { orange: [-4, 0, 2] } };
   add('instant', 'polaroid-600', 'Polaroid 600', 'Integral film', pola, { diffusion: 14, vignette: -14, grain: 10 }, { frame: 'polaroid' });
   add('instant', 'polaroid-sx70', 'SX-70', 'Dreamy, warm', { temp: 12, contrast: -26, saturation: -26, curve: { rgb: [[0, 34], [128, 134], [255, 228]] }, grade: { hi: [44, 20, 0], sh: [20, 12, 0] } }, { diffusion: 26, vignette: -18, grain: 12 }, { frame: 'polaroid' });
   add('instant', 'polaroid-expired', 'Expired Polaroid', 'Colour shifts, dust', { tint: 12, contrast: -20, saturation: -20, curve: { rgb: [[0, 26], [128, 130], [255, 232]] }, grade: { sh: [200, 22, 0], hi: [330, 16, 0] } }, { dust: 22, leak: 16, leakHue: 340, vignette: -20, grain: 14 }, { frame: 'polaroid' });
@@ -148,7 +148,7 @@
   add('instant', 'instax-mini', 'Instax Mini', 'Bright, punchy', { exposure: 0.2, contrast: 12, saturation: 6, temp: -4, highlights: 10 }, { vignette: -10 }, { frame: 'instaxMini' });
   add('instant', 'instax-wide', 'Instax Wide', 'Bright, punchy', { exposure: 0.15, contrast: 12, saturation: 6, temp: -3, highlights: 8 }, { vignette: -10 }, { frame: 'instaxWide' });
 
-  add('vintage', 'print-1960s', '1960s Print', 'Faded magenta-yellow', { temp: 15, tint: 6, contrast: -18, saturation: -30, curve: { rgb: [[0, 34], [128, 132], [255, 226]], b: [[0, 0], [255, 222]], r: [[0, 14], [255, 255]] }, grade: { hi: [40, 24, 0] } }, { dust: 24, grain: 18, vignette: -20 });
+  add('vintage', 'print-1960s', '1960s Print', 'Faded magenta-yellow', { temp: 12, tint: 7, contrast: -18, saturation: -30, curve: { rgb: [[0, 34], [128, 132], [255, 226]], b: [[0, 0], [255, 222]], r: [[0, 14], [255, 255]] }, grade: { hi: [40, 24, 0] } }, { dust: 24, grain: 18, vignette: -20 });
   add('vintage', 'slide-1970s', '1970s Slide', 'Warm, rich reds', { temp: 10, contrast: 10, saturation: 6, grade: { hi: [30, 16, 0], sh: [350, 10, 0] } }, { grain: 14, vignette: -15 });
   add('vintage', 'album-1984', 'Album Print ’84', 'Yellowed album print', { temp: 12, contrast: -10, saturation: -14, curve: { rgb: [[0, 22], [255, 240]] }, grade: { hi: [45, 14, 0], sh: [20, 8, 0] } }, { dust: 10, grain: 12, vignette: -10 });
   add('vintage', 'sepia-print', 'Sepia Print', 'Toned silver print', { mono: 1, contrast: -6, grade: { gl: [32, 36, 0], sh: [20, 20, 0] }, curve: { rgb: [[0, 24], [255, 232]] } }, { dust: 18, vignette: -24, grain: 14 });

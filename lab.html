@@ -53,18 +53,21 @@ canvas{max-width:100%;height:auto;border-radius:8.4px;display:block}
     { label: 'Fujifilm X100V', cat: 'Taken with Fujifilm X100V', find: 'Taken with Fujifilm X100V' },
     { label: 'Fujifilm X-T5', cat: 'Taken with Fujifilm X-T5', find: 'Taken with Fujifilm X-T5' },
     { label: 'Sony a7 IV', cat: null, find: 'Taken with Sony ILCE-7M4' },
-    { label: 'Sony a7 III', cat: null, find: 'Taken with Sony ILCE-7M3' },
+    { label: 'Sony a7 III', cat: null, find: ['ILCE-7M3', 'Sony α7 III', 'Sony A7 III'] },
     { label: 'Portraits', cat: 'Featured pictures of people', find: null },
     { label: 'Landscapes', cat: 'Featured pictures of landscapes', find: null },
-    { label: 'Night', cat: 'Featured night shots', find: null }
+    { label: 'Night', cat: null, find: ['Featured pictures of night', 'Quality images of night', 'Night photographs', 'Night photography'] }
   ];
   const FOCUS = ['fuji-provia', 'fuji-classic-chrome', 'fuji-classic-neg', 'fuji-nostalgic-neg', 'fuji-acros-ye', 'sony-fl', 'sony-in', 'kodak-portra-400', 'cinestill-800t', 'polaroid-600', 'disposable-flash'];
   const j = async (q) => (await fetch(API + q)).json();
-  async function resolveCat(s) {
-    if (s.cat) return 'Category:' + s.cat;
-    const r = await j('action=query&list=search&srnamespace=14&srlimit=5&srsearch=' + encodeURIComponent('intitle:"' + s.find + '"'));
-    const hit = (r.query && r.query.search || [])[0];
-    return hit ? hit.title : null;
+  async function resolveCats(s) {
+    if (s.cat) return ['Category:' + s.cat];
+    const out = [];
+    for (const f of [].concat(s.find)) {
+      const r = await j('action=query&list=search&srnamespace=14&srlimit=4&srsearch=' + encodeURIComponent('intitle:"' + f + '"'));
+      (r.query && r.query.search || []).forEach((h) => out.push(h.title));
+    }
+    return out;
   }
   async function files(cat, n) {
     const q = 'action=query&generator=categorymembers&gcmtype=file&gcmsort=timestamp&gcmdir=desc&gcmlimit=40&gcmtitle=' + encodeURIComponent(cat) +
@@ -109,8 +112,10 @@ canvas{max-width:100%;height:auto;border-radius:8.4px;display:block}
   const photos = [];
   for (const s of SOURCES) {
     try {
-      const cat = await resolveCat(s); if (!cat) continue;
-      for (const f of await files(cat, PER)) photos.push(Object.assign(f, { group: s.label, cat }));
+      for (const cat of await resolveCats(s)) {
+        const got = await files(cat, PER);
+        if (got.length >= 2) { got.forEach((f) => photos.push(Object.assign(f, { group: s.label, cat }))); break; }
+      }
     } catch (e) { console.warn(s.label, e); }
   }
   if (!photos.length) { status('Could not reach Wikimedia Commons from this browser.', 0); return; }
@@ -161,8 +166,9 @@ canvas{max-width:100%;height:auto;border-radius:8.4px;display:block}
     r.flags = [];
     if (r.hi > 0.03) r.flags.push('highlight clipping +' + (r.hi * 100).toFixed(1) + '%');
     if (r.lo > 0.03) r.flags.push('shadow crushing +' + (r.lo * 100).toFixed(1) + '%');
-    if (r.skin != null && Math.abs(r.skin) > 12) r.flags.push('skin hue ' + (r.skin > 0 ? '+' : '') + r.skin.toFixed(0) + '°');
-    if (r.sat != null && (r.sat > 1.45 || r.sat < 0.45) && !l.p.mono) r.flags.push('skin saturation ×' + r.sat.toFixed(2));
+    const tinted = r.neut != null && r.neut > 15;
+    if (r.skin != null && !tinted && Math.abs(r.skin) > 12) r.flags.push('skin hue ' + (r.skin > 0 ? '+' : '') + r.skin.toFixed(0) + '°');
+    if (r.sat != null && !tinted && (r.sat > 1.45 || r.sat < 0.45) && !l.p.mono) r.flags.push('skin saturation ×' + r.sat.toFixed(2));
     if (Math.abs(r.dLmax) > 0.15) r.flags.push('brightness ' + (r.dLmax > 0 ? '+' : '') + r.dLmax.toFixed(2) + ' on one photo');
     return r;
   });
