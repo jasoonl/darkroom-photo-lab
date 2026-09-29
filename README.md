@@ -22,3 +22,7 @@ Paste this: "Darkroom repo is jasoonl/darkroom-photo-lab (Vercel project darkroo
 ## Camera matching (next step)
 
 True calibration needs pairs of the same frame: the camera JPEG in Provia/Standard (or Sony ST) and the same RAW re-rendered in camera with the target film simulation or Creative Look. Fujifilm and Sony bodies both offer in-camera RAW conversion, so one RAW gives every pair.
+
+## License
+
+MIT for this project's own files (`LICENSE`). `support.js` is third-party: see `THIRD_PARTY_NOTICES.md`. A dependency-free version lives at https://github.com/jasoonl/darkroom-photo-lab-html-java.
