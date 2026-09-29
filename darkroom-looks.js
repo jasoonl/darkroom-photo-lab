@@ -62,7 +62,7 @@
   add('fujifilm', 'fuji-pro-neg-hi', 'Pro Neg Hi', 'Portrait', { contrast: 6, saturation: -6, highlights: -6, temp: 3, hsl: { orange: [2, -8, 6], red: [0, -6, 2] } });
   add('fujifilm', 'fuji-pro-neg-std', 'Pro Neg Std', 'Studio, soft', { contrast: -14, saturation: -14, highlights: -10, shadows: 10, hsl: { orange: [2, -10, 6], green: [0, -10, 0] }, curve: { rgb: [[0, 4], [128, 128], [255, 250]] } });
   add('fujifilm', 'fuji-eterna', 'Eterna', 'Cinema', F.eterna);
-  add('fujifilm', 'fuji-eterna-bb', 'Eterna Bleach Bypass', 'Gritty, desaturated', { contrast: 34, saturation: -56, clarity: 12, blacks: -12, highlights: -8, curve: { rgb: [[0, 0], [64, 50], [192, 210], [255, 255]] }, grade: { sh: [200, 8, 0] } });
+  add('fujifilm', 'fuji-eterna-bb', 'Eterna Bleach Bypass', 'Gritty, desaturated', { contrast: 32, saturation: -56, clarity: 12, blacks: -5, highlights: -8, curve: { rgb: [[0, 2], [64, 53], [192, 210], [255, 255]] }, grade: { sh: [200, 8, 0] } });
   add('fujifilm', 'fuji-acros', 'Acros', 'Fine-grain monochrome', F.acros, acrosFx);
   add('fujifilm', 'fuji-acros-ye', 'Acros + Ye', 'Yellow filter', merge(F.acros, { bwmix: { yellow: 20, orange: 12, red: 6, blue: -26, aqua: -14 } }), acrosFx);
   add('fujifilm', 'fuji-acros-r', 'Acros + R', 'Red filter, dark skies', merge(F.acros, { bwmix: { red: 36, orange: 26, yellow: 10, blue: -48, aqua: -36, green: -12 } }), acrosFx);
@@ -129,14 +129,14 @@
   add('film', 'kodak-colorplus-200', 'ColorPlus 200', 'Colour negative · ISO 200', { temp: 14, tint: 4, contrast: -4, saturation: -10, curve: { rgb: [[0, 16], [128, 130], [255, 244]] }, grade: { hi: [48, 14, 0] } }, { grain: 22, grainSize: 26 });
   add('film', 'kodachrome-64', 'Kodachrome 64', 'Slide · ISO 64', { temp: 5, contrast: 22, saturation: 14, curve: { rgb: [[0, 0], [50, 36], [128, 128], [210, 220], [255, 250]] }, hsl: { red: [-2, 12, -6], orange: [0, 2, 0], yellow: [-8, 6, 0], green: [-10, -6, -6], blue: [4, 14, -16], aqua: [4, 6, -6] } }, { grain: 10, grainSize: 16 });
   add('film', 'ektachrome-e100', 'Ektachrome E100', 'Slide · ISO 100', { temp: -6, contrast: 16, saturation: 12, hsl: { blue: [0, 18, -4], aqua: [0, 12, 0], red: [0, 5, 0] } }, { grain: 5, grainSize: 12 });
-  add('film', 'fuji-velvia-50', 'Velvia 50', 'Slide · ISO 50', { contrast: 30, saturation: 34, blacks: -14, curve: { rgb: [[0, 0], [64, 48], [192, 208], [255, 255]] }, hsl: { blue: [4, 20, -16], green: [6, 16, -10], red: [-4, 14, -6], magenta: [-6, 16, 0] } }, { vignette: -12 });
+  add('film', 'fuji-velvia-50', 'Velvia 50', 'Slide · ISO 50', { contrast: 26, saturation: 34, blacks: -6, curve: { rgb: [[0, 2], [64, 53], [192, 208], [255, 255]] }, hsl: { blue: [4, 20, -16], green: [6, 16, -10], red: [-4, 14, -6], magenta: [-6, 16, 0] } }, { vignette: -12 });
   add('film', 'fuji-superia-400', 'Superia 400', 'Colour negative · ISO 400', { temp: -3, contrast: 10, saturation: 8, hsl: { green: [8, 12, 0] }, grade: { sh: [150, 10, 0], hi: [330, 5, 0] } }, { grain: 20, grainSize: 22, grainColor: 25 });
   add('film', 'fuji-pro-400h', 'Pro 400H', 'Colour negative · ISO 400', { exposure: 0.2, contrast: -16, saturation: -10, highlights: -12, shadows: 12, temp: -6, hsl: { green: [20, -6, 4], blue: [-8, -12, 10], orange: [0, -10, 5] }, grade: { sh: [180, 10, 0] } }, { grain: 14, grainSize: 20 });
   add('film', 'fuji-c200', 'Fujicolor C200', 'Colour negative · ISO 200', { temp: -4, contrast: 4, saturation: -4, hsl: { green: [12, 0, 0] }, curve: { rgb: [[0, 12], [255, 248]] } }, { grain: 22, grainSize: 24 });
   add('film', 'cinestill-800t', 'CineStill 800T', 'Tungsten · halation', { temp: -20, tint: -4, contrast: 6, saturation: -4, hsl: { red: [6, 0, 0] }, grade: { sh: [195, 20, 0], hi: [30, 12, 0] } }, { halation: 60, grain: 24, grainSize: 26, grainColor: 20 });
   add('film', 'cinestill-50d', 'CineStill 50D', 'Daylight · halation', { temp: -2, contrast: 6, saturation: 6 }, { halation: 30, grain: 6, grainSize: 14 });
   add('film', 'lomo-800', 'Lomo 800', 'Colour negative · ISO 800', { temp: 6, contrast: 24, saturation: 26 }, { vignette: -26, grain: 28, grainSize: 28 });
-  add('film', 'kodak-tri-x-400', 'Tri-X 400', 'B&W · ISO 400', { mono: 1, contrast: 28, clarity: 12, curve: { rgb: [[0, 0], [64, 48], [192, 214], [255, 255]] }, bwmix: { red: 8, blue: -8 } }, { grain: 36, grainSize: 28, grainRough: 62 });
+  add('film', 'kodak-tri-x-400', 'Tri-X 400', 'B&W · ISO 400', { mono: 1, contrast: 24, clarity: 12, curve: { rgb: [[0, 2], [64, 51], [192, 214], [255, 255]] }, bwmix: { red: 8, blue: -8 } }, { grain: 36, grainSize: 28, grainRough: 62 });
   add('film', 'ilford-hp5', 'HP5 Plus', 'B&W · ISO 400', { mono: 1, contrast: 12 }, { grain: 30, grainSize: 26, grainRough: 50 });
   add('film', 'ilford-delta-3200', 'Delta 3200', 'B&W · ISO 3200', { mono: 1, contrast: 4, blacks: 10, curve: { rgb: [[0, 18], [255, 244]] } }, { grain: 62, grainSize: 42, grainRough: 60 });
 
